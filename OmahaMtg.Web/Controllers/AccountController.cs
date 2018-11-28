@@ -110,7 +110,8 @@ namespace OmahaMtg.Web.Controllers
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
-                return View("Error");
+                //TODO: Instead of just throwing and outputing, work to correct the error. if the error is uncorrectable, THEN just throw.
+                return View($"Error - You haven't ever logged in. Please contact support. #Slack - OmahaMTG");
             }
             var user = await UserManager.FindByIdAsync(await SignInManager.GetVerifiedUserIdAsync());
             if (user != null)
@@ -207,7 +208,7 @@ namespace OmahaMtg.Web.Controllers
         {
             if (userId == null || code == null)
             {
-                return View("Error");
+                return View("Error - Unable to continue - Please contact support.");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
